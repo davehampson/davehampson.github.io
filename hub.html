@@ -23,6 +23,7 @@ And then use it on a URL like <a href="https://beta.unity3d.com/download/2ab9c41
 <br>
 </p>
 
+<h3>Source code:</h3>
 <pre>
 // Get the Mercurial hash:
 var regex = /beta\.unity3d\.com\/download\/([0-f]+)\//i;
@@ -47,7 +48,6 @@ if (foundVer == null)
 if (foundVer != null && foundVer.length >= 2)
   window.location.href = 'unityhub://' + foundVer[1]+ '/' + node;
 </pre>
- 
 
 </body>
 </html>
