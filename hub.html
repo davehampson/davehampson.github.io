@@ -17,11 +17,37 @@ a.bookmarklet
 <p align=center>
 Drag this to your Bookmarks bar:<br>
 <br>
-<a class="bookmarklet" href="javascript:(function()%7B%2F%2F%20Get%20the%20Mercurial%20hash%3A%0A%20%20var%20regex%20%3D%20%2Fbeta%5C.unity3d%5C.com%5C%2Fdownload%5C%2F(%5B0-f%5D%2B)%5C%2F%2Fi%3B%0A%20%20var%20found%20%3D%20window.location.href.match(regex)%3B%0A%20%20var%20node%20%3D%20found%5B1%5D%3B%0A%0A%20%20%2F%2F%20Get%20the%20Unity%20version%20from%20the%20page%3A%0A%20%20var%20h2%20%3D%20document.getElementsByTagName('h2')%3B%0A%20%20regex%20%3D%20%2FUnity%20(%5Cw%2B.%5Cw%2B.%5Cw%2B)%20Beta%20Testing%20downloads%2Fi%3B%0A%20%20found%20%3D%20h2%5B0%5D.innerHTML.match(regex)%3B%0A%20%20var%20version%20%3D%20found%5B1%5D%0A%20%20window.location.href%20%3D%20'unityhub%3A%2F%2F'%20%2B%20version%20%2B%20'%2F'%20%2B%20node%3B%7D)()%3B">Open in Unity Hub</a><br>
+<a class="bookmarklet" href="javascript:(function()%7B%2F%2F%20Get%20the%20Mercurial%20hash%3A%0Avar%20regex%20%3D%20%2Fbeta%5C.unity3d%5C.com%5C%2Fdownload%5C%2F(%5B0-f%5D%2B)%5C%2F%2Fi%3B%0Avar%20found%20%3D%20window.location.href.match(regex)%3B%0Avar%20node%20%3D%20'unknown'%3B%0Aif%20(found%20!%3D%20null%20%26%26%20found.length%20%3E%3D%202)%0A%20%20node%20%3D%20found%5B1%5D%3B%0A%0A%2F%2F%20Get%20the%20Unity%20version%20from%20the%20page%3A%0Avar%20h2%20%3D%20document.getElementsByTagName('h2')%3B%0Avar%20foundVer%20%3D%20null%3B%0Aif%20(h2.length%20%3E%200)%0A%20%20foundVer%20%3D%20h2%5B0%5D.innerHTML.match(%2FUnity%20(%5Cw%2B.%5Cw%2B.%5Cw%2B)%20Beta%20Testing%20downloads%2Fi)%3B%0A%0Aif%20(foundVer%20%3D%3D%20null)%0A%7B%0A%20%20var%20h3%20%3D%20document.getElementsByTagName('h3')%3B%0A%20%20if%20(h3.length%20%3E%200)%0A%20%20%20%20foundVer%20%3D%20h3%5B0%5D.innerHTML.match(%2FUnity%20(%5Cw%2B.%5Cw%2B.%5Cw%2B)%20download%20files%2Fi)%3B%0A%7D%0A%0Aif%20(foundVer%20!%3D%20null%20%26%26%20foundVer.length%20%3E%3D%202)%0A%20%20window.location.href%20%3D%20'unityhub%3A%2F%2F'%20%2B%20foundVer%5B1%5D%2B%20'%2F'%20%2B%20node%3B%7D)()%3B">Open in Unity Hub</a><br>
 <br>
 And then use it on a URL like <a href="https://beta.unity3d.com/download/2ab9c4179772/public_download.html">This One</a> to download using the Unity Hub.
 <br>
 </p>
+
+<pre>
+// Get the Mercurial hash:
+var regex = /beta\.unity3d\.com\/download\/([0-f]+)\//i;
+var found = window.location.href.match(regex);
+var node = 'unknown';
+if (found != null && found.length >= 2)
+  node = found[1];
+
+// Get the Unity version from the page:
+var h2 = document.getElementsByTagName('h2');
+var foundVer = null;
+if (h2.length > 0)
+  foundVer = h2[0].innerHTML.match(/Unity (\w+.\w+.\w+) Beta Testing downloads/i);
+
+if (foundVer == null)
+{
+  var h3 = document.getElementsByTagName('h3');
+  if (h3.length > 0)
+    foundVer = h3[0].innerHTML.match(/Unity (\w+.\w+.\w+) download files/i);
+}
+
+if (foundVer != null && foundVer.length >= 2)
+  window.location.href = 'unityhub://' + foundVer[1]+ '/' + node;
+</pre>
+ 
 
 </body>
 </html>
